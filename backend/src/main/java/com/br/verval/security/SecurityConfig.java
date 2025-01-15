@@ -14,10 +14,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Desativa CSRF
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll() 
-                .requestMatchers("/api/*").authenticated() // Requer autenticação para acessar a API
+                .requestMatchers("/api/*").authenticated()
             )
-            .formLogin(form -> form.disable()) // Desativa a tela de login padrão
-            .httpBasic(httpBasic -> httpBasic.disable()); // Desativa autenticação HTTP básica
+            .formLogin(form -> form.disable())
+            .httpBasic(httpBasic -> httpBasic.disable()); 
 
         return http.build();
     }
