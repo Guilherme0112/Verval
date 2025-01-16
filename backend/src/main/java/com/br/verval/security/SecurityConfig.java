@@ -17,7 +17,21 @@ public class SecurityConfig {
                 .requestMatchers("/api/*").authenticated()
             )
             .formLogin(form -> form.disable())
-            .httpBasic(httpBasic -> httpBasic.disable()); 
+            .httpBasic(httpBasic -> httpBasic.disable())
+            
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(401);
+                    
+                    response.setContentType("application/json");
+                    response.getWriter().println("""
+                        {
+                            error: "Acesso negado. Por favor, faça login.",
+                            status: 401
+                        }""");
+                }))
+                ; 
+            
 
         return http.build();
     }

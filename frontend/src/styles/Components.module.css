@@ -1,0 +1,10 @@
+@import url('../app/globals.css');
+
+/* BoxInfo */
+
+.boxInfo{
+    max-width: 900px;
+    height: auto;
+
+    background-color: var(--box);
+}
