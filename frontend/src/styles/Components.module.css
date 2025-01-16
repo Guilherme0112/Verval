@@ -2,9 +2,33 @@
 
 /* BoxInfo */
 
-.boxInfo{
-    max-width: 900px;
+.boxInfoHome{
+    width: 90%;
     height: auto;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 50px 0 0 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     background-color: var(--box);
+}
+
+/* Button1 */
+
+.button1{
+
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    text-decoration: none;
+    padding: 20px 30px;
+
+    background-color: var(--btn);
+    transition: .3s;
+}
+.button1:hover{
+    background-color: var(--btnHover);
 }

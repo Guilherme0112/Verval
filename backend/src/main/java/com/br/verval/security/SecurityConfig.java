@@ -26,7 +26,7 @@ public class SecurityConfig {
                     response.setContentType("application/json");
                     response.getWriter().println("""
                         {
-                            error: "Acesso negado. Por favor, faça login.",
+                            error: "Acesso negado.",
                             status: 401
                         }""");
                 }))

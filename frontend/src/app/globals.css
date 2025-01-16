@@ -3,12 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffe146;
-  --box: #ffcf1b;
-  --color: black;
-}
+  --background: #330ec7;
+  --box: #6048ff;
+  --color: #f1f1ff;
+  --btn: #3e12ef;
+  --btnHover: #170570;
 
+
+  --teste2: #2d0ea4;
+  --teste3: #330ec7;
+}
+*{
+  color: var(--color);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
 body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+header{
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 50px;
+}
+header div a{
+  margin: 0 20px;
 }
