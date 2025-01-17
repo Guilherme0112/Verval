@@ -1,13 +1,14 @@
+import Link from "next/link";
 import "../app/globals.css";
 
 export default function Header(){
     return (
         <header>
             <div>
-                <a href="">Início</a>
+                <Link href="/">Início</Link>
             </div>
             <div>
-                <a href="">Login</a>
+                <Link href="/auth/login">Login</Link>
                 <a href="">Criar Conta</a>
             </div>
         </header>

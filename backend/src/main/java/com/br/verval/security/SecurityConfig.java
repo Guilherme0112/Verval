@@ -13,23 +13,23 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Desativa CSRF
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login").permitAll() 
-                .requestMatchers("/api/*").authenticated()
+            .requestMatchers("/api/*").authenticated()
+            .requestMatchers("/api/auth/login").permitAll() 
             )
             .formLogin(form -> form.disable())
             .httpBasic(httpBasic -> httpBasic.disable())
             
-            .exceptionHandling(exceptions -> exceptions
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.setStatus(401);
+            // .exceptionHandling(exceptions -> exceptions
+            //     .authenticationEntryPoint((request, response, authException) -> {
+            //         response.setStatus(401);
                     
-                    response.setContentType("application/json");
-                    response.getWriter().println("""
-                        {
-                            error: "Acesso negado.",
-                            status: 401
-                        }""");
-                }))
+            //         response.setContentType("application/json");
+            //         response.getWriter().println("""
+            //             {
+            //                 error: "Acesso negado.",
+            //                 status: 401
+            //             }""");
+                // }))
                 ; 
             
 
