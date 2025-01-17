@@ -1,0 +1,66 @@
+@import url("../app/globals.css");
+
+.form {
+    width: 400px;
+    height: auto;
+    border-radius: 10px;
+    padding: 50px 10px 30px 10px;
+    background-color: var(--box);
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 150px;
+}
+.form div{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    margin: 10px 0;
+    position: relative;
+}
+.label{
+    width: 100%;
+    text-align: start;
+}
+.input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #cccccc77;
+    font-size: 16px;
+    outline: none;
+    background: transparent;
+}
+
+.underline {
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: white;
+    transition: width 0.3s ease-in-out;
+}
+
+.input:focus + .underline,
+.input:hover + .underline {
+    width: 100%;
+}
+
+.form button {
+
+    padding: 10px 50px;
+    margin: 20px 0;
+    background-color: var(--btn);
+    border-radius: 10px;
+    transition: .3s;
+
+}
+.form button:hover{
+    background-color: var(--btnHover);
+}
