@@ -31,6 +31,8 @@ public class Usuario {
     @NotNull(message = "A senha é obrigatória")
     private String senha_usuario;
 
+    private Boolean ativo;
+
     @Column(updatable = false)
     private Date criado_em;
 

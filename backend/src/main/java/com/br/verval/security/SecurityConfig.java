@@ -7,17 +7,22 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 
 @Configuration
 public class SecurityConfig {
 
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String KEY_JWT = dotenv.get("KEY_JWT");
+    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(KEY_JWT.getBytes());
+
     @Bean
     public JwtDecoder jwtDecoder() {
-        // Gerar uma chave secreta segura com o tamanho adequado (256 bits)
-        SecretKey key = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);  // Gera a chave com 256 bits
-        return NimbusJwtDecoder.withSecretKey(key).build();  // Usa o SecretKey para o JwtDecoder
+
+        return NimbusJwtDecoder.withSecretKey(SECRET_KEY).build();
     }
 
     @Bean
