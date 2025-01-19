@@ -30,8 +30,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Desativa CSRF
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/*").permitAll()
+                .requestMatchers("/api/*").authenticated()
                 .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/register").permitAll()
             )
             .formLogin(form -> form.disable())
             .httpBasic(httpBasic -> httpBasic.disable())

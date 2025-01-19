@@ -20,6 +20,16 @@
   padding: 0;
   outline: 0;
 }
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #6047ff inset;
+}
+
+/* Cor do texto do autocomplete */
+input:-webkit-autofill {
+  -webkit-text-fill-color: white !important;
+}
+
 body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;

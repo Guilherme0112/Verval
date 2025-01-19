@@ -25,6 +25,7 @@ public class Usuario {
     private String nome_usuario;
 
     @Email(message = "O e-mail deve ser válido")
+    @NotNull(message =  "O e-mail é obrigatório")
     private String email_usuario;
 
     @Size(min = 6, max = 16, message = "A senha deve ter entre 6 e 16 caracteres")
@@ -64,6 +65,14 @@ public class Usuario {
         return senha_usuario;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     public void setSenha_usuario(String senha_usuario) {
         this.senha_usuario = senha_usuario;
     }
@@ -76,15 +85,4 @@ public class Usuario {
         this.criado_em = criado_em;
     }
 
-    public Date getCriado() {
-        return criado_em;
-    }
-
-
-    public void setCriado(final Date criado_em) {
-        this.criado_em = criado_em;
-    }
-
-
-    
 }

@@ -9,7 +9,7 @@ export default function Header(){
             </div>
             <div>
                 <Link href="/auth/login">Login</Link>
-                <a href="">Criar Conta</a>
+                <Link href="/auth/register">Criar Conta</Link>
             </div>
         </header>
     );
