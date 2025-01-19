@@ -1,3 +1,5 @@
+"use client"
+
 import BoxInfoHome from "@/components/BoxInfoHome";
 
 export default function Home() {

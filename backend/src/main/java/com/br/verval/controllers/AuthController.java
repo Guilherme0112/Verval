@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.br.verval.models.Usuario;
 import com.br.verval.models.dto.ErrorValidationDTO;
 import com.br.verval.models.dto.LoginRequestDTO;
-import com.br.verval.models.dto.ResponseDTO;
 import com.br.verval.repositorys.UsuarioRepository;
 import com.br.verval.utils.JWTUtil;
 import com.br.verval.utils.Util;

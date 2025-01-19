@@ -9,6 +9,8 @@ export default function Login() {
     const [isError, setIsError] = useState(false);
 
     async function onSubmit(event) {
+            
+        
         event.preventDefault();
 
         // Converte o objeto em JSON
@@ -28,14 +30,14 @@ export default function Login() {
         });
 
         const data = await response.json();
-        console.log(data.message);
 
         if (!response.ok) {
-            console.log(data);
             setMessage(data.message || "Ocorreu um erro. Tente novamente mais tarde"); 
             setIsError(true);
             return;
         }  
+
+        
 
 
     }
@@ -54,7 +56,8 @@ export default function Login() {
                 </div>
                 {message && (
                     <div
-                        className={`mt-4 text-center text-red-500`}
+                        className={"mt-4 text-center text-red-500"}
+                        style={{textShadow: "none"}}
                     >
                         {message}
                     </div>
