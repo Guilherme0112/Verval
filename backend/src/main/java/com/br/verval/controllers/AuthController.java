@@ -1,6 +1,7 @@
 package com.br.verval.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class AuthController {
         String senha = loginRequest.getPassword();
 
         if(usuarioRepository.findByEmail(email, true).isEmpty()){
-            return ResponseEntity.ok(new ResponseDTO("Erro", "As credenciais estão incorretas"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "As credenciais estão incorretas"));
         }
 
         // Converte o List para o objeto Usuario
@@ -57,11 +58,10 @@ public class AuthController {
         Usuario usuarioObj = usuarioBD.get(0);
 
         if(!Util.checkPassword(usuarioObj.getSenha_usuario(), senha)){
-            return ResponseEntity.ok(new ResponseDTO("Erro", "As credenciais estão incorretas"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "As credenciais estão incorretas"));
         }
 
         String token = JWTUtil.gerarToken(email);
-
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
     }

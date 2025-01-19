@@ -28,14 +28,16 @@ export default function Login() {
         });
 
         const data = await response.json();
+        console.log(data.message);
 
         if (!response.ok) {
-            setMessage(data.message || "Ocorreu um erro"); 
+            console.log(data);
+            setMessage(data.message || "Ocorreu um erro. Tente novamente mais tarde"); 
             setIsError(true);
+            return;
         }  
 
 
-        console.log(data);
     }
     return (
         <main className="w-full h-screen flex justify-center items-center">
