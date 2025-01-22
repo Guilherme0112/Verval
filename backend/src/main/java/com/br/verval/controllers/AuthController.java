@@ -36,7 +36,7 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid Usuario usuario, BindingResult br) throws Exception {
+    public ResponseEntity<?> Register(@RequestBody @Valid Usuario usuario, BindingResult br) throws Exception {
 
         try {
             // Verifica se existe erros
@@ -55,9 +55,9 @@ public class AuthController {
             }
 
             // Tenta fazer a criação do registro no banco de dados
-            ResponseEntity<?> user = usuarioService.createUser(usuario);
+            usuarioService.createUser(usuario);
 
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(Map.of("Sucesso", "Usuário criado com sucesso"));
 
         } catch (Exception e) {
 
@@ -68,7 +68,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<?> Login(@RequestBody LoginRequestDTO loginRequest) {
 
         String email = loginRequest.getEmail();
         String senha = loginRequest.getPassword();

@@ -1,10 +1,13 @@
 "use client"
 
 import style from "@/styles/Auth.module.css";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function Register() {
 
+    const pathname = usePathname();
     const [messages, setMessages] = useState("");
     const [isError, setIsError] = useState(false);
 
@@ -15,7 +18,7 @@ export default function Register() {
         const formData = new FormData(event.target);
         const dataObject = {};
         formData.forEach((value, key) => {
-            dataObject[key + "_usuario"] = value;
+            dataObject[key] = value;
         });
 
         console.log(dataObject);
@@ -38,30 +41,40 @@ export default function Register() {
         console.log(data);
     }
     return (
-        <main className="w-full h-screen flex justify-center items-center">
-            <form onSubmit={onSubmit} className={style.form}>
-                <div>
-                    <label htmlFor="nome" className={style.label}>Nome</label>
-                    <input type="text" id="nome" className={style.input} name="nome" />
-                    <span className={style.underline}></span>
-                </div>
-                <div>
-                    <label htmlFor="email" className={style.label}>Email</label>
-                    <input type="email" id="email" className={style.input} name="email" />
-                    <span className={style.underline}></span>
-                </div>
-                <div>
-                    <label htmlFor="password" className={style.label}>Senha</label>
-                    <input type="password" id="password" className={style.input} name="senha" />
-                    <span className={style.underline}></span>
-                </div>
-                <div>
-                    <label htmlFor="rpassword" className={style.label}>Repita a Senha</label>
-                    <input type="password" id="rpassword" className={style.input} />
-                    <span className={style.underline}></span>
-                </div>
-                <button type="submit">Criar Conta</button>
-            </form>
-        </main>
+        <AnimatePresence>
+            <motion.div
+                key={pathname}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1 }}>
+
+                <main className="w-full h-screen flex justify-center items-center">
+                    <form onSubmit={onSubmit} className={style.form}>
+                        <div>
+                            <label htmlFor="nome" className={style.label}>Nome</label>
+                            <input type="text" id="nome" className={style.input} name="nome" />
+                            <span className={style.underline}></span>
+                        </div>
+                        <div>
+                            <label htmlFor="email" className={style.label}>Email</label>
+                            <input type="email" id="email" className={style.input} name="email" />
+                            <span className={style.underline}></span>
+                        </div>
+                        <div>
+                            <label htmlFor="password" className={style.label}>Senha</label>
+                            <input type="password" id="password" className={style.input} name="senha" />
+                            <span className={style.underline}></span>
+                        </div>
+                        <div>
+                            <label htmlFor="rpassword" className={style.label}>Repita a Senha</label>
+                            <input type="password" id="rpassword" className={style.input} />
+                            <span className={style.underline}></span>
+                        </div>
+                        <button type="submit">Criar Conta</button>
+                    </form>
+                </main>
+            </motion.div>
+        </AnimatePresence>
     );
 }

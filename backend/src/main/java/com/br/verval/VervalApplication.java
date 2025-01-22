@@ -20,6 +20,9 @@ public class VervalApplication {
 		
 		System.setProperty("KEY_JWT", dotenv.get("KEY_JWT"));
 
+		System.setProperty("USER_EMAIL", dotenv.get("USER_EMAIL"));
+		System.setProperty("PASSWORD_EMAIL", dotenv.get("PASSWORD_EMAIL"));
+
 		SpringApplication.run(VervalApplication.class, args);
 	}
 

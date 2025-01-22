@@ -17,6 +17,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EmailService emailService;
   
     /***
      * Cria o registro do usuário
@@ -44,6 +47,32 @@ public class UsuarioService {
             String userPass = usuario.getSenha();
             usuario.setSenha(Util.Bcrypt(userPass));
 
+            // Gera o token
+            String token = Util.gerarTokenEmail(usuario.getEmail());
+
+            String email = """
+                <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Confirmação de E-mail</title>
+                    </head>
+                    <body>
+                        <h1>Verificação por e-mail</h1>
+                        <p>Por favor, clique no link abaixo para confirmar seu e-mail:</p>
+                        <a href='http://127.0.0.1:3000/mails/confirmation_email/""" + token + """
+                        '
+                           style='display: inline-block; background-color: #4CAF50; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px;'>
+                           Confirmar Email
+                        </a>
+                        <br>
+                        <p>Se você não registrou seu e-mail em nosso site, ignore esta mensagem.</p>
+                    </body>
+                </html>
+                """;
+            
+            // Envia um e-mail de confirmação para o usuário
+            emailService.sendEmail(usuario.getEmail(), "Verificação do e-mail", email);
+
             // Salva o usuário no banco de dados
             usuarioRepository.save(usuario);
 
@@ -53,6 +82,26 @@ public class UsuarioService {
 
             System.out.println("Erro: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Erro_Exception", e.getMessage()));
+        }
+    }
+
+    /***
+     * Altera o status de usuario ativo de false para true
+     * 
+     * @param usuario Objeto do usuário
+     * @throws Exception
+     */
+    public void trocarStatus(Usuario usuario) throws Exception {
+
+        try {
+            
+            usuario.setAtivo(true);
+            usuarioRepository.save(usuario);
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+            throw new Exception(e.getMessage());
         }
     }
 
