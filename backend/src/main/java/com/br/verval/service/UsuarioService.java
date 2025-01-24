@@ -48,7 +48,7 @@ public class UsuarioService {
             usuario.setSenha(Util.Bcrypt(userPass));
 
             // Gera o token
-            String token = Util.gerarTokenEmail(usuario.getEmail());
+            String token = Util.generateToken();
 
             String email = """
                 <html>

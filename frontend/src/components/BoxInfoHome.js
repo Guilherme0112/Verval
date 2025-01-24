@@ -1,7 +1,7 @@
 import style from '../styles/Components.module.css';
 import Button1 from './Button1';
 
-export default function BoxInfo({ info, src }) {
+export default function BoxInfoHome({ info, src }) {
     return (
         <div className={style.boxInfoHome}>
             <div>
