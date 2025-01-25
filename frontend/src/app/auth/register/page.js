@@ -2,14 +2,19 @@
 
 import style from "@/styles/Auth.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { redirect, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Register() {
 
-    const pathname = usePathname();
+    const router = useRouter();
     const [messages, setMessages] = useState("");
     const [isError, setIsError] = useState(false);
+
+    const [erroNome, setErroNome] = useState("");
+    const [erroEmail, setErroEmail] = useState("");
+    const [erroSenha, setErroSenha] = useState("");
+    const [erroRSenha, setErroRSenha] = useState("");
 
     async function onSubmit(event) {
         event.preventDefault();
@@ -33,18 +38,19 @@ export default function Register() {
 
         const data = await response.json();
 
+        console.log(data)
+
         if (!response.ok) {
             setMessages(data.details || "Ocorreu um erro");
             setIsError(true);
             return;
         }
 
-        redirect("/auth/login");
+        router.push("/mails/confirmation_email");
     }
     return (
         <AnimatePresence>
             <motion.div
-                key={pathname}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

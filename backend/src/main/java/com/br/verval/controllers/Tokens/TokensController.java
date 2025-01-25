@@ -62,7 +62,7 @@ public class TokensController {
             // Deleta o registro do token
             confirmEmailRepository.delete(token_obj);
 
-            return ResponseEntity.ok(Map.of("OK", "E-mail verificado com sucesso"));
+            return ResponseEntity.ok(Map.of("Sucesso", "E-mail confirmado com sucesso"));
 
         } catch (Exception e) {
 
