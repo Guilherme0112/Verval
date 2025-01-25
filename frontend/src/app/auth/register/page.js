@@ -2,7 +2,7 @@
 
 import style from "@/styles/Auth.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function Register() {
@@ -21,7 +21,7 @@ export default function Register() {
             dataObject[key] = value;
         });
 
-        console.log(dataObject);
+        // console.log(dataObject);
 
         const response = await fetch("http://localhost:8080/api/auth/register", {
             method: "POST",
@@ -36,9 +36,10 @@ export default function Register() {
         if (!response.ok) {
             setMessages(data.details || "Ocorreu um erro");
             setIsError(true);
+            return;
         }
 
-        console.log(data);
+        redirect("/auth/login");
     }
     return (
         <AnimatePresence>

@@ -1,6 +1,6 @@
 package com.br.verval.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +36,7 @@ public class Usuario {
     private Boolean ativo_usuario = false;
 
     @Column(updatable = false)
-    private Date criado_em;
+    private LocalDate criado_em = LocalDate.now();
 
     public Long getId() {
         return id_usuario;
@@ -78,11 +78,11 @@ public class Usuario {
         this.senha_usuario = senha_usuario;
     }
 
-    public Date getCriado() {
+    public LocalDate getCriado() {
         return criado_em;
     }
 
-    public void setCriado(Date criado_em) {
+    public void setCriado(LocalDate criado_em) {
         this.criado_em = criado_em;
     }
 

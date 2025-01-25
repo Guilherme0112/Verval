@@ -21,10 +21,10 @@ export default function ConfirmationEmail() {
                 const response = await fetch(`http://localhost:8080/api/confirmation_email/${token}`, {
                     method: "GET"
                 });
-                const data = await response.json();
+                const data = await response.json();            
 
                 if (!response.ok) {
-                    setMessage("Ocorreu algum erro. Tente novamente mais tarde")
+                    setMessage(data.Erro)
                     return;
                 }
 

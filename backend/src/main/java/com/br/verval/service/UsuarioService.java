@@ -1,5 +1,6 @@
 package com.br.verval.service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.br.verval.models.ConfirmEmail;
 import com.br.verval.models.Usuario;
+import com.br.verval.repositorys.ConfirmEmailRepository;
 import com.br.verval.repositorys.UsuarioRepository;
 import com.br.verval.utils.Util;
 
@@ -20,6 +23,11 @@ public class UsuarioService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private ConfirmEmailRepository confirmEmailRepository;
+
+    private static final LocalDateTime EXPIRATION = LocalDateTime.now().plusMinutes(5);
   
     /***
      * Cria o registro do usuário
@@ -49,6 +57,14 @@ public class UsuarioService {
 
             // Gera o token
             String token = Util.generateToken();
+
+            // Cria o objeto do token para salvar no banco de dados
+            ConfirmEmail token_obj = new ConfirmEmail();
+            token_obj.setToken(token);
+            token_obj.setEmail_user(usuario.getEmail());
+            token_obj.setExpire_in(EXPIRATION);
+
+            confirmEmailRepository.save(token_obj);
 
             String email = """
                 <html>

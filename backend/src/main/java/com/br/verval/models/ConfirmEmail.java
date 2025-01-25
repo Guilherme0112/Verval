@@ -18,7 +18,7 @@ public class ConfirmEmail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_confirm_email;
 
     @Email
     @NotBlank(message = "O e-mail é obrigatório")
@@ -27,18 +27,17 @@ public class ConfirmEmail {
     @NotBlank(message = "O token é obrigatório")
     private String token;
 
-    @NotBlank(message = "A expiração é obrigatório")
     private LocalDateTime expire_in;
 
     @Column(updatable = false)
     private Date criado;
 
     public Long getId() {
-        return id;
+        return id_confirm_email;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long id_confirm_email) {
+        this.id_confirm_email = id_confirm_email;
     }
 
     public String getEmail_user() {
