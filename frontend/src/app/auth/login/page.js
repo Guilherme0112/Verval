@@ -2,13 +2,13 @@
 
 import style from "@/styles/Auth.module.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Login() {
-    const pathname = usePathname();
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
+    const router = useRouter();
 
     async function onSubmit(event) {
 
@@ -39,11 +39,13 @@ export default function Login() {
             return;
         }
 
+        router.push("/dashboard");
+
     }
     return (
         <AnimatePresence>
             <motion.div
-                key={pathname}
+                key={router}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

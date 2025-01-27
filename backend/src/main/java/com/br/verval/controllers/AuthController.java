@@ -51,13 +51,11 @@ public class AuthController {
                     errorMap.put(fieldName, errorMessage);
                 });
 
-                return ResponseEntity.badRequest().body(Map.of("Erro de validação", errorMap));
+                return ResponseEntity.badRequest().body(Map.of("validation", errorMap));
             }
 
-            // Tenta fazer a criação do registro no banco de dados
-            usuarioService.createUser(usuario);
-
-            return ResponseEntity.ok(Map.of("Sucesso", "Usuário criado com sucesso"));
+            // Retorna se conseguiu criar a conta ou se não conseguiu
+            return usuarioService.createUser(usuario);
 
         } catch (Exception e) {
 

@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function Register() {
 
     const router = useRouter();
-    const [messages, setMessages] = useState("");
+    const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
 
     const [erroNome, setErroNome] = useState("");
@@ -38,13 +38,25 @@ export default function Register() {
 
         const data = await response.json();
 
-        console.log(data)
 
         if (!response.ok) {
-            setMessages(data.details || "Ocorreu um erro");
+            if (data.validation) {
+
+                // Verifica e define os erros específicos
+                data.validation["nome_usuario"] ? setErroNome(data.validation["nome_usuario"]) : setErroNome(null);
+
+                data.validation["email_usuario"] ? setErroEmail(data.validation["email_usuario"]) : setErroEmail(null);
+
+                data.validation["senha_usuario"] ? setErroSenha(data.validation["senha_usuario"]) : setErroSenha();
+
+            }
+
+            data["email_usuario"] ? setErroEmail(data["email_usuario"]) : setErroEmail(null);
+
             setIsError(true);
             return;
         }
+
 
         router.push("/mails/confirmation_email");
     }
@@ -63,21 +75,36 @@ export default function Register() {
                             <input type="text" id="nome" className={style.input} name="nome" />
                             <span className={style.underline}></span>
                         </div>
+                        {erroNome && (
+                            <p className="text-red-500" style={{ textShadow: "none" }}>{erroNome}</p>
+                        )}
                         <div>
                             <label htmlFor="email" className={style.label}>Email</label>
                             <input type="email" id="email" className={style.input} name="email" />
                             <span className={style.underline}></span>
                         </div>
+                        {erroEmail && (
+                            <p className="text-red-500" style={{ textShadow: "none" }}>{erroEmail}</p>
+                        )}
                         <div>
                             <label htmlFor="password" className={style.label}>Senha</label>
                             <input type="password" id="password" className={style.input} name="senha" />
                             <span className={style.underline}></span>
                         </div>
+                        {erroSenha && (
+                            <p className="text-red-500" style={{ textShadow: "none" }}>{erroSenha}</p>
+                        )}
                         <div>
                             <label htmlFor="rpassword" className={style.label}>Repita a Senha</label>
                             <input type="password" id="rpassword" className={style.input} />
                             <span className={style.underline}></span>
                         </div>
+                        {erroRSenha && (
+                            <p className="text-red-500" style={{ textShadow: "none" }}>{erroRSenha}</p>
+                        )}
+                        {message && (
+                            <p className="w-full mt-4 text-center text-red-500" style={{ textShadow: "none" }}>{message}</p>
+                        )}
                         <button type="submit">Criar Conta</button>
                     </form>
                 </main>

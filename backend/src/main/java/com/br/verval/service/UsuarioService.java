@@ -33,7 +33,7 @@ public class UsuarioService {
      * Cria o registro do usuário
      * 
      * @param usuario Recebe o objeto do usuário
-     * @return Retorna TRUE caso tenha criado, FALSE quando não foi possível
+     * @return Retorna a mensagem dizendo se deu certo ou não
      */
     public ResponseEntity<?> createUser(Usuario usuario) throws Exception{
 
@@ -42,13 +42,13 @@ public class UsuarioService {
             // Verifica se o e-mail já está em uso
             if(!usuarioRepository.findByEmail(usuario.getEmail(), true).isEmpty()){
 
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Erro", "Este e-mail já está em uso"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("email_usuario", "Este e-mail já está em uso"));
             }
 
             // Verifica se a conta está registrada como inativa
             if(!usuarioRepository.findByEmail(usuario.getEmail(), false).isEmpty()){
                 
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Erro", "Esta conta está inativa"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("email_usuario", "Esta conta está inativa"));
             }
 
             // Pega a senha do usuário e criptografa
