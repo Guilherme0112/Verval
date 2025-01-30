@@ -1,16 +1,23 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 export default function Dashboard(){
-    const pathname = usePathname();
+
+    const router = useRouter()
+
+    const token = localStorage.getItem("token");
+
+    if(!token){
+        router.push("/auth/login");
+    }
 
     return (
         <AnimatePresence mode="wait">
             <motion.div
-                key={pathname}
+                key={router}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

@@ -33,14 +33,18 @@ export default function Login() {
 
         const data = await response.json();
 
-        console.log(data);
-
         if (!response.ok) {
             setMessage(data.message || "Ocorreu um erro. Tente novamente mais tarde");
             setIsError(true);
             return;
         }
 
+        if(!data.token){
+            setMessage("Ocorreu um erro. Tente novamente mais tarde");
+            return;
+        }
+        
+        localStorage.setItem("token", data.token);
         router.push("/dashboard");
 
     }
