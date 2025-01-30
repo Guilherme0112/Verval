@@ -10,6 +10,8 @@ import com.br.verval.models.EmailRequest;
 import com.br.verval.models.Usuario;
 import com.br.verval.repositorys.EmailRequestRepository;
 
+import jakarta.validation.constraints.Email;
+
 @Service
 public class EmailRequestService {
 
@@ -61,19 +63,21 @@ public class EmailRequestService {
 
                     return false;
 
-                } else {
-
-                    this.verifyAllRegisters();
-
-                }
+                } 
             } else {
 
                 // Envia um e-mail de confirmação para o usuário
                 emailService.sendEmail(usuario.getEmail(), "Verificação do e-mail", email);
 
-                 // Gera um registro de requisição
-                emailRequestRepository.save(new EmailRequest(usuario.getEmail()));
+                // Gera um registro de requisição
+                EmailRequest email_request_obj = new EmailRequest();
+                email_request_obj.setEmail(usuario.getEmail());
+
+                emailRequestRepository.save(email_request_obj);
             }
+
+            // Verifica outras requisições e deleta aquelas que já estão expiradas
+            this.verifyAllRegisters(); 
 
             return true;
 

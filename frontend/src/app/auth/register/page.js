@@ -19,7 +19,20 @@ export default function Register() {
     async function onSubmit(event) {
         event.preventDefault();
 
-        //Transforma o objeto em array com o _usuario para o BindingResult validar
+
+        // Verifica se as duas senhas coencidem (Validação no front pois é so pra ajudar o usuário a não digitar a senha errada)
+        var r_senha = event.target.rpassword.value;
+        var senha = event.target.password.value;
+
+        if(r_senha != senha){
+            setErroRSenha("As senhas não coencidem");
+            return;
+        } else {
+            setErroRSenha("");
+        }
+        
+
+        // Transforma o objeto em array com o _usuario para o BindingResult validar
         const formData = new FormData(event.target);
         const dataObject = {};
         formData.forEach((value, key) => {
@@ -37,8 +50,6 @@ export default function Register() {
         });
 
         const data = await response.json();
-
-        console.log(data);
 
         if (!response.ok) {
             if (data.validation) {
@@ -101,7 +112,7 @@ export default function Register() {
                             <span className={style.underline}></span>
                         </div>
                         {erroRSenha && (
-                            <p className="text-red-500" style={{ textShadow: "none" }}>{erroRSenha}</p>
+                            <p className="w-full text-center text-red-500" style={{ textShadow: "none" }}>{erroRSenha}</p>
                         )}
                         {message && (
                             <p className="w-full mt-4 text-center text-red-500" style={{ textShadow: "none" }}>{message}</p>

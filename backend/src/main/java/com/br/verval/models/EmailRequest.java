@@ -22,9 +22,6 @@ public class EmailRequest {
     @Column(updatable = false)
     private LocalDateTime requirido_em = LocalDateTime.now();
     
-    public EmailRequest(String email){
-        this.email = email;
-    }
 
     public Long getId() {
         return id;

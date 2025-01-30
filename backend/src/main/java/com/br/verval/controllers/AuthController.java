@@ -1,5 +1,6 @@
 package com.br.verval.controllers;
 
+import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,8 @@ public class AuthController {
         // Gera o token
         String token = JWTUtil.gerarToken(email);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
+        return ResponseEntity.ok()
+                            .header("Authorization", "Bearer " + token)
+                            .body(Map.of("status", 200));
     }
 }

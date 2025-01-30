@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 
-export default function Dashboard({children}){
+export default function Dashboard(){
     const pathname = usePathname();
 
     return (

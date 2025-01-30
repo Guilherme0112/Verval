@@ -14,7 +14,7 @@ public class JWTUtil {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String KEY_JWT = dotenv.get("KEY_JWT");
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(KEY_JWT.getBytes());
-    private static final long TIME_EXPIRATION = 36000;
+    private static final long TIME_EXPIRATION = 4 * 60 * 60 * 1000;
     
     public static String gerarToken(String email){
         return Jwts.builder()
