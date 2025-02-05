@@ -2,17 +2,12 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
-export default function Dashboard(){
+export default function Dashboard() {
 
     const router = useRouter()
-
-    const token = localStorage.getItem("token");
-
-    if(!token){
-        router.push("/auth/login");
-    }
 
     return (
         <AnimatePresence mode="wait">

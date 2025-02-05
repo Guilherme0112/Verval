@@ -32,6 +32,9 @@ export default function Login() {
         });
 
         const data = await response.json();
+        
+        console.log(response)
+        console.log(data)
 
         if (!response.ok) {
             setMessage(data.message || "Ocorreu um erro. Tente novamente mais tarde");

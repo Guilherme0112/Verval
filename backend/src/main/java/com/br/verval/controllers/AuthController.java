@@ -1,12 +1,12 @@
 package com.br.verval.controllers;
 
-import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -91,8 +91,16 @@ public class AuthController {
         // Gera o token
         String token = JWTUtil.gerarToken(email);
 
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+        .httpOnly(true)
+        .secure(true)
+        .path("/")
+        .sameSite("Strict")
+        .maxAge(14400)
+        .build();
+
         return ResponseEntity.ok()
-                            .header("Authorization", "Bearer " + token)
+                            .header("Set-Cookie", cookie.toString())
                             .body(Map.of("status", 200));
     }
 }
