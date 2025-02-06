@@ -9,10 +9,6 @@ public class AuthService {
     
     public static Boolean validateSession(LoginRequestDTO loginRequest){
 
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
-
-        
 
         return Boolean.FALSE;
     }

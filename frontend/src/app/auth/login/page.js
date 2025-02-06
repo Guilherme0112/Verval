@@ -10,6 +10,8 @@ export default function Login() {
     const [isError, setIsError] = useState(false);
     const router = useRouter();
 
+    console.log(document.cookie);
+
     async function onSubmit(event) {
 
 
@@ -33,8 +35,6 @@ export default function Login() {
 
         const data = await response.json();
         
-        console.log(response)
-        console.log(data)
 
         if (!response.ok) {
             setMessage(data.message || "Ocorreu um erro. Tente novamente mais tarde");
@@ -42,12 +42,6 @@ export default function Login() {
             return;
         }
 
-        if(!data.token){
-            setMessage("Ocorreu um erro. Tente novamente mais tarde");
-            return;
-        }
-        
-        localStorage.setItem("token", data.token);
         router.push("/dashboard");
 
     }

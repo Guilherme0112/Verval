@@ -10,7 +10,6 @@ import com.br.verval.models.EmailRequest;
 import com.br.verval.models.Usuario;
 import com.br.verval.repositorys.EmailRequestRepository;
 
-import jakarta.validation.constraints.Email;
 
 @Service
 public class EmailRequestService {
