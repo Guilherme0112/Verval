@@ -5,8 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.br.verval.filter.JwtAuthenticationFilter;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.security.Keys;
@@ -18,7 +20,12 @@ public class SecurityConfig {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String KEY_JWT = dotenv.get("KEY_JWT");
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(KEY_JWT.getBytes());
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter){
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+    
     @Bean
     public JwtDecoder jwtDecoder() {
 
@@ -30,25 +37,16 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Desativa CSRF
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/api/auth/register").permitAll()
+                .requestMatchers("/api/auth/validate").permitAll()
+                .anyRequest().authenticated()
             )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin(form -> form.disable())
-            .httpBasic(httpBasic -> httpBasic.disable())
-            .oauth2ResourceServer(oauth -> oauth
-                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
-            );
+            .httpBasic(httpBasic -> httpBasic.disable());
         
         return http.build();
     }
 
-    /**
-     * Personaliza o conversor de autenticação JWT, caso precise mapear roles ou claims.
-     */
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        // Adicione personalizações ao conversor, se necessário
-        return converter;
-    }
 }

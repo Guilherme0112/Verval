@@ -10,8 +10,6 @@ export default function Login() {
     const [isError, setIsError] = useState(false);
     const router = useRouter();
 
-    console.log(document.cookie);
-
     async function onSubmit(event) {
 
 
@@ -41,6 +39,16 @@ export default function Login() {
             setIsError(true);
             return;
         }
+    
+        
+
+        if(data.Token){
+            document.cookie `token=${data.Token}`;
+        }
+
+        document.cookie = "token=";
+        
+        setMessage("");
 
         router.push("/dashboard");
 
@@ -58,12 +66,12 @@ export default function Login() {
                     <form onSubmit={onSubmit} className={style.form}>
                         <div>
                             <label htmlFor="email" className={style.label}>Email</label>
-                            <input type="email" id="email" className={style.input} name="email" required />
+                            <input type="email" id="email" className={style.input} name="email" />
                             <span className={style.underline}></span>
                         </div>
                         <div>
                             <label htmlFor="password" className={style.label}>Senha</label>
-                            <input type="password" id="password" className={style.input} name="password" required />
+                            <input type="password" id="password" className={style.input} name="password" />
                             <span className={style.underline}></span>
                         </div>
                         {message && (

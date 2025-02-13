@@ -38,4 +38,5 @@ public class Util {
     public static String generateToken(){
         return UUID.randomUUID().toString();
     }
+
 }

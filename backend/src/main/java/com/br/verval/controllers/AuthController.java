@@ -1,17 +1,15 @@
 package com.br.verval.controllers;
 
-import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +22,8 @@ import com.br.verval.service.UsuarioService;
 import com.br.verval.utils.JWTUtil;
 import com.br.verval.utils.Util;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,11 +31,16 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
+    
+    public AuthController(UsuarioService usuarioService,
+                          UsuarioRepository usuarioRepository){
+
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> Register(@RequestBody @Valid Usuario usuario, BindingResult br) throws Exception {
@@ -68,7 +73,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> Login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<?> Login(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response, HttpServletRequest request) {
 
         String email = loginRequest.getEmail();
         String senha = loginRequest.getPassword();
@@ -92,16 +97,20 @@ public class AuthController {
         // Gera o token
         String token = JWTUtil.gerarToken(email);
 
-        ResponseCookie cookie = ResponseCookie.from("token", token)
-        .httpOnly(true)
-        .secure(true)
-        .path("/")
-        .sameSite("Strict")
-        .maxAge(14400)
-        .build();
-
         return ResponseEntity.ok()
-                            .header("Set-Cookie", cookie.toString())
-                            .body(Map.of("status", 200));
+                            .body(Map.of("Token", token));
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> Validate(HttpServletRequest request){
+
+        String token = request.getHeader("Authorization");
+
+        if(token == null){
+            return ResponseEntity.status(401).body(Map.of("erro", "Usuário não autenticado"));
+        }
+
+        return ResponseEntity.ok().body(Map.of("token", token));
+
     }
 }
