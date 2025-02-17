@@ -41,13 +41,6 @@ export default function Login() {
         }
     
         
-
-        if(data.Token){
-            document.cookie `token=${data.Token}`;
-        }
-
-        document.cookie = "token=";
-        
         setMessage("");
 
         router.push("/dashboard");

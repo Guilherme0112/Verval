@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -24,28 +25,29 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String authHeader = httpRequest.getHeader("Authorization");
-
-        if("OPTION".equalsIgnoreCase(httpRequest.getMethod())){
-            sendJsonErrorResponse(httpResponse, 200, "");
+        // Permitir requisições OPTIONS (para CORS)
+        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+            httpResponse.setStatus(HttpServletResponse.SC_OK);
             return;
         }
 
+        // Permitir acesso sem autenticação para rotas públicas
         String path = httpRequest.getRequestURI();
-        if(path.startsWith("/api/auth")){
+        if (path.startsWith("/api/auth")) {
             chain.doFilter(request, response);
             return;
         }
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        // Buscar token nos cookies
+        String token = getTokenFromCookies(httpRequest);
+
+        if (token == null) {
             sendJsonErrorResponse(httpResponse, HttpServletResponse.SC_UNAUTHORIZED, "Token ausente ou inválido");
             return;
         }
 
-        String token = authHeader.substring(7); // Remove "Bearer "
-
         try {
-            if (JWTUtil.tokenExpired(token)) { // Se o token estiver expirado, retorna erro
+            if (JWTUtil.tokenExpired(token)) {
                 sendJsonErrorResponse(httpResponse, HttpServletResponse.SC_UNAUTHORIZED, "Token expirado");
                 return;
             }
@@ -58,7 +60,20 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             return;
         }
 
+        // Se o token for válido, continuar a requisição
         chain.doFilter(request, response);
+    }
+
+    private String getTokenFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     private void sendJsonErrorResponse(HttpServletResponse response, int status, String message) throws IOException {

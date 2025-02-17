@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -97,20 +98,52 @@ public class AuthController {
         // Gera o token
         String token = JWTUtil.gerarToken(email);
 
+        // Gera a resposta/estrutura do cookie
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+            .httpOnly(true)  
+            .secure(false)     
+            .path("/")          
+            .maxAge(60 * 60 * 4) 
+            .sameSite("Strict") 
+            .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
+
         return ResponseEntity.ok()
-                            .body(Map.of("Token", token));
+                            .body(Map.of("status", "Toke gerado com sucesso"));
     }
 
     @GetMapping("/validate")
     public ResponseEntity<?> Validate(HttpServletRequest request){
 
-        String token = request.getHeader("Authorization");
+        try {
 
-        if(token == null){
-            return ResponseEntity.status(401).body(Map.of("erro", "Usuário não autenticado"));
+            // Busca o token nos cookies
+           String token = JWTUtil.getCookie(request, "token");
+
+           // Verifica se existe algum token
+            if(token.isEmpty()){
+                return ResponseEntity.status(401).body(Map.of("erro", "Usuário não autenticado"));
+            }
+    
+            // Faz o decode do token para verificar a autenticidade do token
+            if(JWTUtil.decodeJWT(token) == null){
+                return ResponseEntity.badRequest().body(Map.of("erro", "Token inválido"));
+            }
+    
+            // Verifica se o token está expirado
+            if(JWTUtil.tokenExpired(token)){
+                return ResponseEntity.badRequest().body(Map.of("erro", "Token expirado"));
+            }
+
+
+            return ResponseEntity.ok().body(Map.of("status", "Usuário autenticado"));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(Map.of("token", token));
+       
 
     }
 }

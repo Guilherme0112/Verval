@@ -1,5 +1,6 @@
 package com.br.verval.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -37,6 +38,7 @@ public class JWTUtil {
         String[] splitToken = token.split("\\."); // Divide o JWT (header.payload.signature)
     
         return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(KEY_JWT.getBytes(StandardCharsets.UTF_8)))
                 .build()
                 .parseClaimsJwt(splitToken[0] + "." + splitToken[1] + ".") // Ignora a assinatura
                 .getBody();
@@ -46,7 +48,7 @@ public class JWTUtil {
      * Verifica se o token está expirado
      * 
      * @param token Token que será verificado
-     * @return Retorna FALSE caso esteja expirado e TRUE caso não esteja
+     * @return Retorna TRUE caso não esteja expirado e FALSE caso esteja
      */
     public static Boolean tokenExpired(String token){
         Date expiration = Jwts.parserBuilder()

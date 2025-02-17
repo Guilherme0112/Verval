@@ -23,7 +23,8 @@ public class UsuarioController {
         
         Claims token = JWTUtil.decodeJWT(request.getHeader("Authorization").replace("Bearer ", ""));
 
-        return ResponseEntity.ok().body(Map.of("status", token));
+
+        return ResponseEntity.ok().body(Map.of("status", token ));
         
     } 
 
